@@ -3,7 +3,15 @@ import Element from "./components/Element";
 
 function App() {
   return (
-    <div className="app">
+    <div
+      style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+    >
+      <Element />
+      <Element />
+      <Element />
+      <Element />
+      <Element />
+      <Element />
       <Element />
     </div>
   );

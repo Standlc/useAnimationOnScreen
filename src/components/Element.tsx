@@ -3,10 +3,7 @@ import { useAnimateOnScreen } from "../hooks/onScreen";
 import "./element.css";
 
 const Element = () => {
-  const [element] = useAnimateOnScreen({
-    screenEntryRatio: 0.9,
-    transitionDuration: 400,
-  });
+  const [element] = useAnimateOnScreen({});
   return <div ref={element} className="element"></div>;
 };
 
