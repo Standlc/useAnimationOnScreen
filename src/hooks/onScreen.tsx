@@ -1,79 +1,74 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Animations } from "./Animations";
 
-export const useAnimateOnScreen = ({
-  screenEntryRatio,
-  animationType,
-  transitionDuration,
-  makeAnimationUnique,
-}: {
+export const useAnimateOnScreen = (config?: {
   screenEntryRatio?: number;
   animationType?: string;
   transitionDuration?: number;
   makeAnimationUnique?: boolean;
 }) => {
+  const screenEntryRatio = config?.screenEntryRatio;
+  const animationType = config?.animationType;
+  const transitionDuration = config?.transitionDuration;
+  const makeAnimationUnique = config?.makeAnimationUnique;
   const [isOnScreen, setIsOnScreen] = useState(false);
   const screenHeight = window.innerHeight;
-  const element = useRef<
-    | HTMLDivElement
-    | HTMLImageElement
-    | HTMLParagraphElement
-    | HTMLHeadingElement
-    | null
-  >(null);
+  const element = useRef<HTMLEmbedElement>(null);
+  const defaultAnimationType = "fade-up";
+  const defaultTransitionDuration = 400;
+  const defaultScreenEntryRatio = 0.9;
 
   const showElement = () => {
-    if (element.current) {
-      element.current.style.opacity = "1";
-      element.current.style.transform = "";
-    }
-  };
-  const hideElement = (animationType: string) => {
-    if (element.current) {
-      element.current.style.opacity = "0";
-      if (animationType === "fade-up") {
-        element.current.style.transform = "translateY(80px)";
-      } else if (animationType === "fade-left") {
-        element.current.style.transform = "translateX(80px)";
-      } else if (animationType === "fade-right") {
-        element.current.style.transform = "translateY(80px)";
-      } else if (animationType === "zoom-out") {
-        element.current.style.transform = "scale(1.2)";
-      }
-    }
-  };
-  const observeElement = () => {
-    if (element.current) {
-      const elementTop = element.current.getBoundingClientRect().top;
-      elementTop <= screenHeight * (screenEntryRatio ? screenEntryRatio : 0.9)
-        ? !isOnScreen && setIsOnScreen(true)
-        : isOnScreen && !makeAnimationUnique && setIsOnScreen(false);
-    }
-  };
-  const assignAnimation = (animationType: string) => {
-    if (element.current) {
-      isOnScreen ? showElement() : hideElement(animationType);
-    }
-  };
-  const assignTransitionDuration = () => {
-    if (element.current) {
-      element.current.style.transition = `opacity ${
-        transitionDuration ? transitionDuration : 400
-      }ms, transform ${transitionDuration ? transitionDuration : 400}ms`;
-    }
+    if (!element.current) return;
+    element.current.style.opacity = "1";
+    element.current.style.transform = "";
   };
 
-  useEffect(() => {
-    assignTransitionDuration();
-    observeElement();
+  const hideElement = useCallback((animationType: string) => {
+    const animation = Animations.find(
+      (animation) => animation.name === animationType
+    );
+    if (animation === undefined || !element.current) return;
+    element.current.style.transform = animation.transform;
+    element.current.style.opacity = animation.opacity;
+  }, []);
+
+  const tellIfElementIsOnScreen = useCallback(() => {
+    if (!element.current) return;
+    const elementTop = element.current.getBoundingClientRect().top;
+    const isElementOnScreen =
+      elementTop <=
+      screenHeight *
+        (screenEntryRatio ? screenEntryRatio : defaultScreenEntryRatio);
+
+    !isOnScreen && setIsOnScreen(isElementOnScreen);
+    isOnScreen && !makeAnimationUnique && setIsOnScreen(isElementOnScreen);
+  }, [isOnScreen, makeAnimationUnique, screenEntryRatio, screenHeight]);
+
+  const assignTransitionDuration = useCallback(() => {
+    if (!element.current) return;
+    element.current.style.transition = `opacity ${
+      transitionDuration ? transitionDuration : defaultTransitionDuration
+    }ms, transform ${
+      transitionDuration ? transitionDuration : defaultTransitionDuration
+    }ms`;
   }, [transitionDuration]);
 
   useEffect(() => {
-    document.addEventListener("scroll", observeElement);
-    return () => document.removeEventListener("scroll", observeElement);
-  }, [isOnScreen, screenEntryRatio, screenHeight]);
+    isOnScreen
+      ? showElement()
+      : hideElement(animationType ? animationType : defaultAnimationType);
+  }, [isOnScreen, animationType, hideElement]);
 
   useEffect(() => {
-    assignAnimation(animationType ? animationType : "fade-up");
-  }, [isOnScreen]);
-  return [element];
+    tellIfElementIsOnScreen();
+    assignTransitionDuration();
+  }, [transitionDuration, assignTransitionDuration, tellIfElementIsOnScreen]);
+
+  useEffect(() => {
+    document.addEventListener("scroll", tellIfElementIsOnScreen);
+    return () =>
+      document.removeEventListener("scroll", tellIfElementIsOnScreen);
+  }, [tellIfElementIsOnScreen]);
+  return element;
 };
