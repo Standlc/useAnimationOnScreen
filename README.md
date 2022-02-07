@@ -36,9 +36,9 @@ export default App = () => {
 
 ### `Config`
 
-| key                   | option type | default   | Comment                                     |
-| --------------------- | ----------- | --------- | ------------------------------------------- |
-| `screenEntryRatio`    | `number`    | `0.9`     | When the animation happens, from `0` to `1` |
-| `animationType`       | `string`    | `fade-up` | Type of animation                           |
-| `makeAnimationUnique` | `boolean`   | `false`   | Makes the animation happen only once        |
-| `transitionDuration`  | `number`    | `400`     | `0` disables the transition                 |
+| key                   | option type | default   | Comment                                                   |
+| --------------------- | ----------- | --------- | --------------------------------------------------------- |
+| `screenEntryRatio`    | `number`    | `0.9`     | When the animation happens on the screen, from `0` to `1` |
+| `animationType`       | `string`    | `fade-up` | Type of animation                                         |
+| `makeAnimationUnique` | `boolean`   | `false`   | Makes the animation happen only once                      |
+| `transitionDuration`  | `number`    | `400`     | In ms, `0` disables the transition                        |
