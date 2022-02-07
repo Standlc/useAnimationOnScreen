@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Animations } from "./Animations";
 
-export const useAnimateOnScreen = (config?: {
+export const useAnimationOnScreen = (config?: {
   screenEntryRatio?: number;
   animationType?: string;
   transitionDuration?: number;
@@ -12,7 +12,7 @@ export const useAnimateOnScreen = (config?: {
   const transitionDuration = config?.transitionDuration;
   const makeAnimationUnique = config?.makeAnimationUnique;
   const [isOnScreen, setIsOnScreen] = useState(false);
-  const screenHeight = window.innerHeight;
+  const screenHeight = window?.innerHeight;
   const element = useRef<HTMLEmbedElement>(null);
   const defaultAnimationType = "fade-up";
   const defaultTransitionDuration = 400;

@@ -1,0 +1,26 @@
+{
+  "name": "use-animation-on-screen",
+  "version": "1.0.12",
+  "description": "",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "typings": "dist/index.d.ts",
+  "private": false,
+  "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject",
+      "package": "vite build && npm run package:types",
+      "package:types": "npx tsc --emitDeclarationOnly --outDir dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Standlc/useAnimateOnScreen.git"
+  },
+  "author": "standlc",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^2.7.13"
+  }
+}

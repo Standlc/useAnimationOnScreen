@@ -1,11 +1,10 @@
 import React from "react";
-import { useAnimateOnScreen } from "../hook/animationOnScreen";
+import { useAnimationOnScreen } from "../hook/animationOnScreen";
 import "./element.css";
 
 const Element = () => {
-  const element = useAnimateOnScreen({
-    animationType: "fade-right",
-    screenEntryRatio: 0.8,
+  const element = useAnimationOnScreen({
+    animationType: "fade-up",
   });
   return (
     <div ref={element} className="element">
