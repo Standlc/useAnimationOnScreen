@@ -15,7 +15,7 @@ npm install use-animation-on-screen
 ```javascript
 import { useAnimationOnScreen } from "use-animation-on-screen";
 export default App = () => {
-  //  With default config
+  // With default config
   const element = useAnimationOnScreen();
 
   // With custom config
@@ -26,6 +26,7 @@ export default App = () => {
     makeAnimationUnique: false,
   });
 
+  // Add the ref to your element
   return (
     <>
       <div ref={element}>Hello World</div>
