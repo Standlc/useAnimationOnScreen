@@ -22,10 +22,11 @@ export default App = () => {
   const element = useAnimationOnScreen({
     screenEntryRatio: 0.9,
     animationType: "fade-up",
-    transitionDuration: 500,
+    transitionDuration: 800,
     makeAnimationUnique: false,
   });
 
+  //Add the ref to your element
   return (
     <>
       <div ref={element}>Hello World</div>

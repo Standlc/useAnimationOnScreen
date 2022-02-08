@@ -1,1 +1,1 @@
-export { useAnimationOnScreen } from "./animationOnScreen";
+import { useAnimationOnScreen } from "./hook/animationOnScreen";

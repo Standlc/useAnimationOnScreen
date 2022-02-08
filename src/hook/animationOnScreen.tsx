@@ -17,7 +17,7 @@ export const useAnimationOnScreen = (config?: {
     : "fade-up";
   const transitionDuration = config?.transitionDuration
     ? config?.transitionDuration
-    : 900;
+    : 800;
   const transitionTimingFunction = config?.transitionTimingFunction
     ? config?.transitionTimingFunction
     : "cubic-bezier(0.165,0.7,0.44,1)";
