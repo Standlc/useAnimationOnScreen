@@ -4,4 +4,5 @@ export declare const useAnimationOnScreen: (config?: {
     animationType?: string | undefined;
     transitionDuration?: number | undefined;
     makeAnimationUnique?: boolean | undefined;
+    animationDelay?: number | undefined;
 } | undefined) => import("react").RefObject<HTMLEmbedElement>;

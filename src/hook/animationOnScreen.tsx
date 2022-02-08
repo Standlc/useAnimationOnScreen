@@ -6,16 +6,19 @@ export const useAnimationOnScreen = (config?: {
   animationType?: string;
   transitionDuration?: number;
   makeAnimationUnique?: boolean;
+  animationDelay?: number;
 }) => {
   const screenEntryRatio = config?.screenEntryRatio;
   const animationType = config?.animationType;
   const transitionDuration = config?.transitionDuration;
   const makeAnimationUnique = config?.makeAnimationUnique;
+  const animationDelay = config?.animationDelay;
   const [isOnScreen, setIsOnScreen] = useState(false);
-  const screenHeight = window?.innerHeight;
+  const screenHeight =
+    typeof window.innerHeight !== "undefined" ? window.innerHeight : undefined;
   const element = useRef<HTMLEmbedElement>(null);
   const defaultAnimationType = "fade-up";
-  const defaultTransitionDuration = 400;
+  const defaultTransitionDuration = 900;
   const defaultScreenEntryRatio = 0.9;
 
   const showElement = () => {
@@ -34,24 +37,29 @@ export const useAnimationOnScreen = (config?: {
   }, []);
 
   const tellIfElementIsOnScreen = useCallback(() => {
-    if (!element.current) return;
+    if (!element.current || screenHeight === undefined) return;
     const elementTop = element.current.getBoundingClientRect().top;
     const isElementOnScreen =
       elementTop <=
       screenHeight *
-        (screenEntryRatio ? screenEntryRatio : defaultScreenEntryRatio);
+        (screenEntryRatio !== undefined
+          ? screenEntryRatio
+          : defaultScreenEntryRatio);
 
     !isOnScreen && setIsOnScreen(isElementOnScreen);
     isOnScreen && !makeAnimationUnique && setIsOnScreen(isElementOnScreen);
   }, [isOnScreen, makeAnimationUnique, screenEntryRatio, screenHeight]);
 
-  const assignTransitionDuration = useCallback(() => {
+  const assignTransitionDurationConfig = useCallback(() => {
     if (!element.current) return;
     element.current.style.transition = `opacity ${
       transitionDuration ? transitionDuration : defaultTransitionDuration
     }ms, transform ${
       transitionDuration ? transitionDuration : defaultTransitionDuration
     }ms`;
+    element.current.style.transitionTimingFunction =
+      "cubic-bezier(0.165,0.84,0.44,1)";
+    element.current.style.transitionDelay = `${animationDelay}ms`;
   }, [transitionDuration]);
 
   useEffect(() => {
@@ -62,8 +70,12 @@ export const useAnimationOnScreen = (config?: {
 
   useEffect(() => {
     tellIfElementIsOnScreen();
-    assignTransitionDuration();
-  }, [transitionDuration, assignTransitionDuration, tellIfElementIsOnScreen]);
+    assignTransitionDurationConfig();
+  }, [
+    transitionDuration,
+    assignTransitionDurationConfig,
+    tellIfElementIsOnScreen,
+  ]);
 
   useEffect(() => {
     document.addEventListener("scroll", tellIfElementIsOnScreen);

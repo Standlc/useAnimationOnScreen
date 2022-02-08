@@ -6,22 +6,43 @@ function App() {
     <div
       style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
     >
-      <Element />
-      <Element />
-      <Element />
-      <Element />
-      <Element />
-      <Element />
-      <Element />
-      <Element />
-      <Element />
-      <Element />
-      <Element />
-      <Element />
-      <Element />
-      <Element />
-      <Element />
-      <Element />
+      <div className="home"></div>
+      <Element
+        animationType="fade-up"
+        transitionDuration={800}
+        screenEntryRatio={1}
+        makeAnimationUnique={false}
+      />
+      <Element
+        animationType="fade-left"
+        transitionDuration={800}
+        screenEntryRatio={0}
+        makeAnimationUnique={false}
+      />
+      <Element
+        animationType="fade-right"
+        transitionDuration={800}
+        screenEntryRatio={0.9}
+        makeAnimationUnique={false}
+      />
+      <Element
+        animationType="zoom-in"
+        transitionDuration={2800}
+        screenEntryRatio={0.9}
+        makeAnimationUnique={false}
+      />
+      <Element
+        animationType="zoom-out"
+        transitionDuration={800}
+        screenEntryRatio={0.9}
+        makeAnimationUnique={true}
+      />
+      <Element
+        animationType="fade-up"
+        transitionDuration={800}
+        screenEntryRatio={0.6}
+        makeAnimationUnique={false}
+      />
     </div>
   );
 }
