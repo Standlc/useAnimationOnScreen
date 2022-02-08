@@ -9,19 +9,16 @@ function App() {
       <div className="home"></div>
       <Element
         animationType="fade-up"
-        transitionDuration={800}
-        screenEntryRatio={1}
+        screenEntryRatio={0.9}
         makeAnimationUnique={false}
       />
       <Element
         animationType="fade-left"
-        transitionDuration={800}
         screenEntryRatio={0}
         makeAnimationUnique={false}
       />
       <Element
         animationType="fade-right"
-        transitionDuration={800}
         screenEntryRatio={0.9}
         makeAnimationUnique={false}
       />
@@ -33,13 +30,11 @@ function App() {
       />
       <Element
         animationType="zoom-out"
-        transitionDuration={800}
         screenEntryRatio={0.9}
         makeAnimationUnique={true}
       />
       <Element
         animationType="fade-up"
-        transitionDuration={800}
         screenEntryRatio={0.6}
         makeAnimationUnique={false}
       />

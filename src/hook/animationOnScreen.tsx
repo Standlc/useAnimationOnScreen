@@ -5,21 +5,28 @@ export const useAnimationOnScreen = (config?: {
   screenEntryRatio?: number;
   animationType?: string;
   transitionDuration?: number;
+  transitionDelay?: number;
+  transitionTimingFunction?: string;
   makeAnimationUnique?: boolean;
-  animationDelay?: number;
 }) => {
-  const screenEntryRatio = config?.screenEntryRatio;
-  const animationType = config?.animationType;
-  const transitionDuration = config?.transitionDuration;
+  const screenEntryRatio = config?.screenEntryRatio
+    ? config?.screenEntryRatio
+    : 0.9;
+  const animationType = config?.animationType
+    ? config?.animationType
+    : "fade-up";
+  const transitionDuration = config?.transitionDuration
+    ? config?.transitionDuration
+    : 900;
+  const transitionTimingFunction = config?.transitionTimingFunction
+    ? config?.transitionTimingFunction
+    : "cubic-bezier(0.165,0.7,0.44,1)";
   const makeAnimationUnique = config?.makeAnimationUnique;
-  const animationDelay = config?.animationDelay;
+  const transitionDelay = config?.transitionDelay ? config?.transitionDelay : 0;
   const [isOnScreen, setIsOnScreen] = useState(false);
   const screenHeight =
     typeof window !== "undefined" ? window.innerHeight : undefined;
   const element = useRef<HTMLEmbedElement>(null);
-  const defaultAnimationType = "fade-up";
-  const defaultTransitionDuration = 900;
-  const defaultScreenEntryRatio = 0.9;
 
   const showElement = () => {
     if (!element.current) return;
@@ -39,33 +46,18 @@ export const useAnimationOnScreen = (config?: {
   const tellIfElementIsOnScreen = useCallback(() => {
     if (!element.current || screenHeight === undefined) return;
     const elementTop = element.current.getBoundingClientRect().top;
-    const isElementOnScreen =
-      elementTop <=
-      screenHeight *
-        (screenEntryRatio !== undefined
-          ? screenEntryRatio
-          : defaultScreenEntryRatio);
-
+    const isElementOnScreen = elementTop <= screenHeight * screenEntryRatio;
     !isOnScreen && setIsOnScreen(isElementOnScreen);
     isOnScreen && !makeAnimationUnique && setIsOnScreen(isElementOnScreen);
   }, [isOnScreen, makeAnimationUnique, screenEntryRatio, screenHeight]);
 
   const assignTransitionDurationConfig = useCallback(() => {
     if (!element.current) return;
-    element.current.style.transition = `opacity ${
-      transitionDuration ? transitionDuration : defaultTransitionDuration
-    }ms, transform ${
-      transitionDuration ? transitionDuration : defaultTransitionDuration
-    }ms`;
-    element.current.style.transitionTimingFunction =
-      "cubic-bezier(0.165,0.84,0.44,1)";
-    element.current.style.transitionDelay = `${animationDelay}ms`;
-  }, [transitionDuration]);
+    element.current.style.transition = `opacity ${transitionDuration}ms ${transitionTimingFunction} ${transitionDelay}ms, transform ${transitionDuration}ms ${transitionTimingFunction} ${transitionDelay}ms`;
+  }, [transitionDuration, transitionDelay]);
 
   useEffect(() => {
-    isOnScreen
-      ? showElement()
-      : hideElement(animationType ? animationType : defaultAnimationType);
+    isOnScreen ? showElement() : hideElement(animationType);
   }, [isOnScreen, animationType, hideElement]);
 
   useEffect(() => {
@@ -82,5 +74,6 @@ export const useAnimationOnScreen = (config?: {
     return () =>
       document.removeEventListener("scroll", tellIfElementIsOnScreen);
   }, [tellIfElementIsOnScreen]);
+
   return element;
 };
