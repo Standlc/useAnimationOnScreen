@@ -1,6 +1,6 @@
 {
   "name": "use-animation-on-screen",
-  "version": "1.0.17",
+  "version": "1.0.19",
   "description": "Allows you to give life to your website by animating any element when it enters the screen.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",

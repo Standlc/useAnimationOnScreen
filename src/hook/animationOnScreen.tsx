@@ -15,7 +15,7 @@ export const useAnimationOnScreen = (config?: {
   const animationDelay = config?.animationDelay;
   const [isOnScreen, setIsOnScreen] = useState(false);
   const screenHeight =
-    typeof window.innerHeight !== "undefined" ? window.innerHeight : undefined;
+    typeof window !== "undefined" ? window.innerHeight : undefined;
   const element = useRef<HTMLEmbedElement>(null);
   const defaultAnimationType = "fade-up";
   const defaultTransitionDuration = 900;

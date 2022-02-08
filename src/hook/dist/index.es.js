@@ -33,7 +33,7 @@ const useAnimationOnScreen = (config) => {
   const makeAnimationUnique = config == null ? void 0 : config.makeAnimationUnique;
   const animationDelay = config == null ? void 0 : config.animationDelay;
   const [isOnScreen, setIsOnScreen] = useState(false);
-  const screenHeight = typeof window.innerHeight !== "undefined" ? window.innerHeight : void 0;
+  const screenHeight = typeof window !== "undefined" ? window.innerHeight : void 0;
   const element = useRef(null);
   const defaultAnimationType = "fade-up";
   const defaultTransitionDuration = 900;
